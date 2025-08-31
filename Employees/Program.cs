@@ -1,6 +1,8 @@
 using Employees.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Employees
 {
@@ -9,10 +11,17 @@ namespace Employees
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            //Grabs the connection string from the appsettings.json
+            var connectionString = builder.Configuration.GetConnectionString("EmployeeDB");
 
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
+
+            //Builds db context from EmployeeDataContext class to build the dataset
+            builder.Services.AddDbContext<EmployeeDataContext>(options => 
+            options.UseSqlite(connectionString));
+
             
 
             var app = builder.Build();
