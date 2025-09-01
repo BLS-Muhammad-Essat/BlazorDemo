@@ -1,4 +1,12 @@
-﻿@page "/"
+﻿
+@* Get the EmployeeData *@
 
-<PageTitle>Index</PageTitle>
+@using Microsoft.EntityFrameworkCore;
+@using Employees.Data
+
+@inject IDbContextFactory<EmployeeDataContext> EmployeeDataContextFactory
+
+@page "/"
+
+<PageTitle>Our Employees!</PageTitle>
 
