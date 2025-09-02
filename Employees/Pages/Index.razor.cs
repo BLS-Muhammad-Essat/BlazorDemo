@@ -1,5 +1,6 @@
 ﻿
 using Employees.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Employees.Pages
 {
@@ -10,6 +11,10 @@ namespace Employees.Pages
         //Get context
         private EmployeeDataContext? _context;
 
+
+        //Insert on all employees from database into this list
+        public List<Employee>? OurEmployees { get; set; }
+
         //Create the new employee variable
         public Employee NewEmployee { get; set; }
 
@@ -19,7 +24,27 @@ namespace Employees.Pages
         protected override async Task OnInitializedAsync()
         {
             ShowCreate = false;
+            await ShowEmployees();
         }
+
+        //Read from the database
+        public async Task ShowEmployees()
+        {
+            //spinning up the database
+            _context ??= await EmployeeDataContextFactory.CreateDbContextAsync();
+
+            if(_context is not null)
+            {
+
+                OurEmployees = await _context.Employees.ToListAsync();
+            }
+
+            if(_context is not null)
+            {
+                await _context.DisposeAsync();
+            }
+        }
+
 
         //this display the form and attaches the object instance for creation of employee
         public void ShowCreateForm()
@@ -35,11 +60,12 @@ namespace Employees.Pages
 
             if(NewEmployee is not null)
             {
-                context?.Employees.Add(NewEmployee);
-                context?.SaveChangesAsync();
+                _context?.Employees.Add(NewEmployee);
+                _context?.SaveChangesAsync();
             }
 
             ShowCreate = false;
+            NewEmployee = new();
         }
 
     }

@@ -19,8 +19,8 @@ namespace Employees
             builder.Services.AddServerSideBlazor();
 
             //Builds db context from EmployeeDataContext class to build the dataset
-            builder.Services.AddDbContext<EmployeeDataContext>(options => 
-            options.UseSqlite(connectionString));
+            builder.Services.AddDbContextFactory<EmployeeDataContext>(options => 
+                options.UseSqlite(connectionString));
 
             
 
