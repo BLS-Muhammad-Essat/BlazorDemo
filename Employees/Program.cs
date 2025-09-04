@@ -20,8 +20,7 @@ namespace Employees
 
             //Builds db context from EmployeeDataContext class to build the dataset
             builder.Services.AddDbContextFactory<EmployeeDataContext>(options => 
-                options.UseSqlite(connectionString));
-
+                options.UseSqlite(connectionString, x => x.CommandTimeout(60)));
             
 
             var app = builder.Build();
